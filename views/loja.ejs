@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carros</title>
+  <style>
+    body{
+      font-family: sans-serif;
+      margin: 5px;
+      padding: 5px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px;
+    }
+    
+    .header a {
+      margin-left: 10px;
+    }
+    
+    .title-wrapper {
+      border: solid 1px #2a163d;
+      border-radius: 10px;
+      background-color: #DABCF9;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .title-wrapper h1 {
+      margin: 0;
+      color: rgb(27, 27, 28);
+      font-size: 33px;
+    }
+    
+    .car-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .car-card:hover {
+      border: solid 1px;
+      border-color: rgb(221, 174, 219);
+      background-color: #e8e5e5;
+    }
+    
+    .car-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+    }
+    
+    .car-image {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    
+    .car-info {
+      margin-top: 10px;
+      text-align: center;
+    }
+    
+    .car-info h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    
+    .car-info p {
+      text-align: left;
+      margin: 5px 0;
+    }
+    
+    a {
+      border-radius: 30px;
+      text-align: center;
+      display: block;
+      height: auto;
+      width: 150px;
+      padding: 10px;
+      font-size: 20px;
+      border: solid 1px;
+      color: white;
+      background-color: #A069C1;
+      text-decoration: none;
+    }
+    .botaoAlugar{
+      color: black;
+      background-color: #DABCF9;
+      border-radius: 15px;
+      font-size: 15px;
+      width: 100px;
+    }
+    .botaoAlugar:hover{
+      background-color: #ca98e8;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/menu">Inicio</a>
+  </div>
+  
+  <div class="title-wrapper">
+    <h1>Locadora de Carros</h1>
+  </div>
+  
+  <div class="car-list">
+    <% carros.forEach(carro => { %>
+      <div class="car-card">
+        <img class="car-image" src="<%= carro.foto %>" alt="Foto do Carro">
+        <div class="car-info">
+          <h3><%= carro.nome %></h3>
+          <p>Marca: <%= carro.marca %></p>
+          <p>Cor: <%= carro.cor %></p>
+          <p>Valor: <%= carro.valor %></p>
+          <p>Preço Diária: <%= carro.precoDiaria %></p>
+          <p>Status: <b><%= carro.status%></b></p>
+          <center>
+          <a href="/loja/alugar/<%= carro._id %>" class="botaoAlugar">Alugar</a>
+        </center>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

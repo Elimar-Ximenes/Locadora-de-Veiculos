@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todos Aluguéis</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 5px;
+      padding: 5px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px;
+    }
+    
+    .header a {
+      margin-left: 10px;
+    }
+    
+    .title-wrapper {
+      border: solid 1px #2a163d;
+      border-radius: 10px;
+      background-color: #DABCF9;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .title-wrapper h1 {
+      margin: 0;
+      color: rgb(27, 27, 28);
+      font-size: 33px;
+    }
+    
+    .aluguel-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .aluguel-card:hover {
+      border: solid 1px;
+      border-color: rgb(46, 45, 46);
+      background-color: #eaf5b7;
+    }
+    
+    .aluguel-card, .aluguel-card2, .aluguel-card3 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 300px;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+    }
+    .aluguel-card{
+      background-color: #f3f6a1;
+    }
+    .aluguel-card2{
+      background-color: #b7f5c1;
+    }
+    .aluguel-card3{
+      background-color: #e79e9e;
+    }
+    
+    .aluguel-info {
+      margin-top: 10px;
+      text-align: center;
+    }
+    
+    .aluguel-info h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+    
+    .aluguel-info p {
+      text-align: left;
+      margin: 5px 0;
+    }
+    
+    a {
+      border-radius: 30px;
+      text-align: center;
+      display: inline-block;
+      height: auto;
+      width: 100px;
+      padding: 10px;
+      font-size: 15px;
+      border: solid 1px;
+      color: white;
+      text-decoration: none;
+      background-color: #A069C1;
+      font-size: 20px;
+    }
+    .botaoAceitar, .botaoRecusar{
+      color: black;
+      background-color: #59ab9e;
+      border-radius: 15px;
+      font-size: 15px;
+    }
+    .botaoAceitar:hover{
+      background-color: #81cabe;
+    }
+    .botaoRecusar{
+      background-color: #ed8487;
+    }
+    .botaoRecusar:hover{
+      background-color: #f2aaad;
+    }
+    .aluguel-info .buttons {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/admin/menu">Início</a>
+  </div>
+  
+  <div class="title-wrapper">
+    <h1>Todos Aluguéis</h1>
+  </div>
+  <div class="aluguel-list">
+    <% if (aluguelEmAnalise.length > 0) { %>
+      
+      <% aluguelEmAnalise.forEach(function(aluguel) { %>
+        <div class="aluguel-card">
+          <div class="aluguel-info">
+            <h2>Detalhes do Aluguel</h2><br>
+            <p>Aluguel ID: <%= aluguel._id %></p>
+            <p>Usuário: <%= aluguel.usuario %></p>
+            <p>Data de Início: <%= aluguel.dataInicio %></p>
+            <p>Data de Fim: <%= aluguel.dataFinal %></p>
+            <p>Valor Total: <%= aluguel.valorTotal %></p>
+            <p>Método de Pagamento: <%= aluguel.metodoPagamento %></p>
+            <p>Status: <b><%= aluguel.status %></b></p>
+          </div>
+          <hr>
+          <div class="car-info">
+            <h2>Detalhes do Carro</h2>
+            <p>Nome: <%= aluguel.carro.nome %></p>
+            <p>Marca: <%= aluguel.carro.marca %></p>
+            <p>Cor: <%= aluguel.carro.cor %></p>
+            <p>Valor: <%= aluguel.carro.valor %></p>
+            <p>Preço Diária: <%= aluguel.carro.precoDiaria %></p>
+            <div class="buttons">
+              <% if (aluguel.status !== 'Rejeitado' && aluguel.status !== 'Confirmado') { %>
+                <a href="/admin/aluguel/aceitar/<%= aluguel._id %>" class="botaoAceitar">Aceitar</a>
+                <a href="/admin/aluguel/recusar/<%= aluguel._id %>" class="botaoRecusar">Rejeitar</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+    <% if (aluguelConfirmado.length > 0) { %>
+      <% aluguelConfirmado.forEach(function(aluguel) { %>
+        <div class="aluguel-card2">
+          <div class="aluguel-info">
+            <h2>Detalhes do Aluguel</h2><br>
+            <p>Aluguel ID: <%= aluguel._id %></p>
+            <p>Usuário: <%= aluguel.usuario %></p>
+            <p>Data de Início: <%= aluguel.dataInicio %></p>
+            <p>Data de Fim: <%= aluguel.dataFinal %></p>
+            <p>Valor Total: <%= aluguel.valorTotal %></p>
+            <p>Método de Pagamento: <%= aluguel.metodoPagamento %></p>
+            <p>Status: <b><%= aluguel.status %></b></p>
+          </div>
+          <hr>
+          <div class="car-info">
+            <h2>Detalhes do Carro</h2>
+            <p>Nome: <%= aluguel.carro.nome %></p>
+            <p>Marca: <%= aluguel.carro.marca %></p>
+            <p>Cor: <%= aluguel.carro.cor %></p>
+            <p>Valor: <%= aluguel.carro.valor %></p>
+            <p>Preço Diária: <%= aluguel.carro.precoDiaria %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+    <% if (aluguelRejeitado.length > 0) { %>
+      <br>
+      <% aluguelRejeitado.forEach(function(aluguel) { %>
+        <div class="aluguel-card3">
+          <div class="aluguel-info">
+            <h2>Detalhes do Aluguel</h2><br>
+            <p>Aluguel ID: <%= aluguel._id %></p>
+            <p>Usuário: <%= aluguel.usuario %></p>
+            <p>Data de Início: <%= aluguel.dataInicio %></p>
+            <p>Data de Fim: <%= aluguel.dataFinal %></p>
+            <p>Valor Total: <%= aluguel.valorTotal %></p>
+            <p>Método de Pagamento: <%= aluguel.metodoPagamento %></p>
+            <p>Status: <b><%= aluguel.status %></b></p>
+          </div>
+          <hr>
+          <div class="car-info">
+            <h2>Detalhes do Carro</h2>
+            <p>Nome: <%= aluguel.carro.nome %></p>
+            <p>Marca: <%= aluguel.carro.marca %></p>
+            <p>Cor: <%= aluguel.carro.cor %></p>
+            <p>Valor: <%= aluguel.carro.valor %></p>
+            <p>Preço Diária: <%= aluguel.carro.precoDiaria %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+</body>
+</html>
