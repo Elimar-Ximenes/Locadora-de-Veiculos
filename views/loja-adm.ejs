@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carros</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 5px;
+      padding: 5px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px;
+    }
+    
+    .header a {
+      margin-left: 10px;
+    }
+    
+    .title-wrapper {
+      border: solid 1px #2a163d;
+      border-radius: 10px;
+      background-color: #DABCF9;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .title-wrapper h1 {
+      margin: 0;
+      color: rgb(27, 27, 28);
+      font-size: 33px;
+    }
+    
+    .car-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .car-card:hover {
+      border: solid 1px;
+      border-color: rgb(221, 174, 219);
+      background-color: #e8e5e5;
+    }
+    
+    .car-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+    }
+    
+    .car-image {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    
+    .car-info {
+      margin-top: 10px;
+      text-align: center;
+    }
+    
+    .car-info h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    
+    .car-info p {
+      text-align: left;
+      margin: 5px 0;
+    }
+    
+    a, button {
+      border-radius: 30px;
+      text-align: center;
+      display: inline-block;
+      height: auto;
+      width: 150px;
+      padding: 10px;
+      font-size: 20px;
+      border: solid 1px;
+      color: white;
+      background-color: #A069C1;
+      text-decoration: none;
+    }
+    
+    .botaoEditar,
+    .botaoExcluir {
+      margin: 2px;
+      display: inline-block;
+      color: black;
+      background-color: #DABCF9;
+      border-radius: 15px;
+      font-size: 15px;
+      width: 90px;
+    }
+    
+    .botaoEditar:hover {
+      background-color: #ca98e8;
+    }
+    
+    .botaoExcluir {
+      background-color: #f0bfc1;
+    }
+    
+    .botaoExcluir:hover {
+      background-color: #f2aaad;
+    }
+
+    .botaoes {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 7px;
+    }
+  </style>
+  <script>
+    function checkExisteAluguel(carroId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/check-existe-aluguel-carro', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.exists) {
+              alert("Existe um aluguel para esse carro, exclusão cancelada!");
+            } else {
+              document.getElementById("formExcluirCarro_" + carroId).submit();
+            }
+          } else {
+            alert("Erro na verificação se existe aluguel para esse carro.");
+          }
+        }
+      };
+      xhr.send(JSON.stringify({ carro: carroId }));
+
+      return false; // Impede o envio normal do formulário
+    }
+
+    function confirmarExclusao() {
+      return confirm('Deseja realmente excluir o carro?');
+    }
+
+    function validateBotaoExcluir(carroId) {
+      return confirmarExclusao() && checkExisteAluguel(carroId);
+    }
+  </script>
+</head>
+<body>
+  <div class="header">
+    <a href="/admin/menu">Inicio</a>
+  </div>
+  
+  <div class="title-wrapper">
+    <h1>Locadora de Carros</h1>
+  </div>
+  
+  <div class="car-list">
+    <% carros.forEach(carro => { %>
+      <div class="car-card">
+        <img class="car-image" src="<%= carro.foto %>" alt="Foto do Carro">
+        <div class="car-info">
+          <h3><%= carro.nome %></h3>
+          <p>Marca: <%= carro.marca %></p>
+          <p>Cor: <%= carro.cor %></p>
+          <p>Valor: <%= carro.valor %></p>
+          <p>Preço Diária: <%= carro.precoDiaria %></p>
+          <p>Status: <b><%= carro.status %></b></p>
+          <br>
+          <div class="botaoes">
+            <a href="/loja/editar-carro/<%= carro._id %>" class="botaoEditar">Editar</a>
+            <% if (!carro.hasAluguel) { %>
+              <form id="formExcluirCarro_<%= carro._id %>" action="/loja/excluir-carro/<%= carro._id %>" method="get">
+                <input type="hidden" name="_method" value="delete">
+                <button class="botaoExcluir" value="<%= carro._id %>" onclick="return validateBotaoExcluir('<%= carro._id %>');">Excluir</button>
+              </form>
+            <% } else { %>
+              <p>Exclusão não permitida</p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

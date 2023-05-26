@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body {
+        background-color: #DABCF9;
+    }
+
+    .login {
+        font-family: sans-serif;
+        text-align: center;
+        height: auto;
+        width: 17%;
+        background-color: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 40px;
+        padding-right: 50px;
+        border-radius: 15px;
+        color: #fff;
+        border-style: solid;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border: 1px;
+        border-radius: 9px;
+        outline: none;
+        font-size: 15px;
+        background-color: #F0F0F0;
+    }
+    h1 {
+        color: #341A4E;
+        font-size: 25px;
+    }
+
+    h3 {
+        color: #4f1f69;
+        font-size: 13px;
+    }
+
+    a {
+        font-size: 5px;
+    }
+
+    #botaoEntrar {
+        text-align: center;
+        border: none;
+        padding: 10px;
+        /*width: 210px;*/
+        width: 70%;
+        height: 35px;
+        font-size: 15px;
+        border-radius: 15px;
+        color: #ffffff;
+        background-color: #A069C1;
+    }
+
+    #botaoEntrar:hover {
+        transition: all 0.5s;
+        background-color: #4f1f69;
+    }
+
+    p {
+        color: #A069C1;
+    }
+     @media(max-width: 700px) {
+        .login {
+            height: auto;
+            width: 70%;
+        }
+    }
+</style>
+</head>
+<body>
+  <div class="login">
+  <h1>Login (adm)</h1>
+  <form action="/login/admin" method="POST">
+    <input type="email" id="username" name="username" placeholder="Email" required="required" >
+    <br><br>
+    <input type="password" id="password" name="password" placeholder="Senha" required="required"><br>
+    <br></br>
+    <input type="submit" value="Login" id="botaoEntrar"></br></br>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    label {
+        padding: 5px;
+        text-align: left;
+        color: #270c27;
+    }
+    body {
+        background-color: #DABCF9;
+    }
+
+    .login {
+        font-family: sans-serif;
+        height: auto;
+        width: auto;
+        background-color: #fff;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        padding-left: 40px;
+        padding-right: 50px;
+        border-radius: 15px;
+        color: #fff;
+        border-style: solid;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border: 1px;
+        border-radius: 9px;
+        outline: none;
+        font-size: 15px;
+        background-color: #F0F0F0;
+    }
+    h1 {
+        color: #341A4E;
+        font-size: 25px;
+    }   
+
+    #botaoCadastro {
+        text-align: center;
+        border: none;
+        padding: 10px;
+        width: 70%;
+        height: 37px;
+        font-size: 17px;
+        border-radius: 15px;
+        color: #ffffff;
+        background-color: #A069C1;
+    }
+
+    #botaoCadastro:hover {
+        transition: all 0.5s;
+        background-color: #4f1f69;
+    }
+
+    p {
+        color: #A069C1;
+    }
+     @media(max-width: 700px) {
+        .login {
+            height: auto;
+            width: 70%;
+        }
+    }
+  </style>
+  <script>
+    function checkPasswords() {
+      var password1 = document.getElementById("password").value;
+      var password2 = document.getElementById("passwordConfirmar").value;
+      
+      if (password1 !== password2) {
+        alert("As novas senhas não coincidem!");
+        return false; // Impede o envio do formulário
+      }
+      return true; // Permite o envio do formulário
+    }
+
+    function checkSenha() {
+      var senhaAtual = document.getElementById("passwordAtual").value;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/verificar-senha', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.exists) {
+              document.getElementById("validaSenha-form").submit();
+            } else {
+              alert("Senha atual incorreta!");
+            }
+          } else {
+            alert("Erro na verificação da senha.");
+          }
+        }
+      };
+      xhr.send(JSON.stringify({ password: senhaAtual }));
+
+      return false; // Impede o envio normal do formulário
+    }
+
+    function validateForm() {
+      return checkPasswords() && checkSenha();
+    }
+  </script>
+</head>
+<body>
+  <br><br>
+  <div class="login">
+    <br>
+    <center><h1>Alterar Senha</h1></center>
+    <form id="validaSenha-form" action="/validaSenha" method="POST" onsubmit="return validateForm()">
+      <label for="passwordAtual">Senha atual:</label>
+      <input type="text" id="passwordAtual" name="passwordAtual" placeholder="Senha Atual" required="required"><br>
+      <br>
+      <label for="password">Senha nova:</label>
+      <input type="password" id="password" name="password" placeholder="Senha Nova" required="required"><br>
+      <br>
+      <label for="passwordConfirmar">Confirmar senha nova:</label>
+      <input type="password" id="passwordConfirmar" name="passwordConfirmar" placeholder="Confirmar Senha Nova" required="required"><br>
+      <br>
+      <center>
+        <input type="submit" value="Alterar" id="botaoCadastro"><br><br>
+      </center>
+    </form>
+  </div>
+</body>
+</html>
